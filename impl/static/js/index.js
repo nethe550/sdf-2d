@@ -1,3 +1,13 @@
+/**
+ * @author nethe550
+ * @license MIT
+ * @description The primary entrypoint of the SDF editor.
+ */
+
+/**
+ * @typedef {import('../../../src/type/Types.js').ControlPanelEntries} ControlPanelEntries - A collection of entries used for control panel state management.
+ */
+
 import Vector2 from '../../../src/util/Vector2.js';
 import Color from '../../../src/util/Color.js';
 import IImage from '../../../src/render/IImage.js';
@@ -16,6 +26,10 @@ const resize = () => {
 
 resize();
 
+/**
+ * The collection of all SDF entries.
+ * @type {ControlPanelEntries}
+ */
 const SDF = {
     circle: {
         sdf: SDFCircle,
@@ -72,6 +86,9 @@ const panel = new ControlPanel('SDF Renderer', document.body, SDF);
 
 panel.addEventListener('change', render);
 
+/**
+ * Renders the image with the current control panel shape and parameters.
+ */
 function render() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);

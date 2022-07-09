@@ -1,23 +1,56 @@
+/**
+ * @author nethe550
+ * @license MIT
+ * @description The SDF renderer editor.
+ */
+
 import Vector2 from '../../../src/util/Vector2.js';
 import Color from '../../../src/util/Color.js';
 
+/**
+ * @typedef {import('../../../src/type/Types.js').ControlPanelEntries} ControlPanelEntries - A collection of entries used for control panel state management.
+ * @typedef {import('../../../src/type/Types.js').ControlPanelEntry} ControlPanelEntry - A control panel entry.
+ */
+
+/**
+ * Truncates a number to a specified amount of decimal digits.
+ * @param {number} number - The number to truncate.
+ * @param {number} digits - The amount of decimal digits.
+ * @returns {number} The truncated number.
+ */
 const trunc = (number, digits) => {
     const multiplier = Math.pow(10, digits);
-    const adjustedNum = number * multiplier;
-    const truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
-
-    return truncatedNum / multiplier;
+    const adjusted = number * multiplier;
+    return Math[adjusted < 0 ? 'ceil' : 'floor'](adjusted) / multiplier;
 };
 
+/**
+ * The SDF renderer editor.
+ * @class
+ */
 class ControlPanel extends EventTarget {
 
-    constructor(title, parent, shapes) {
+    /**
+     * Creates a new control panel.
+     * @param {string} title - The title of the control panel.
+     * @param {HTMLElement} parent - The parent element that this panel should root to. 
+     * @param {ControlPanelEntries} entries - The entries to populate this control panel with.
+     */
+    constructor(title, parent, entries) {
 
         super();
 
-        this.shapes = shapes;
+        /**
+         * The entries used to populate this control panel.
+         * @type {ControlPanelEntries}
+         */
+        this.entries = entries;
 
-        this.currentShape = this.shapes[Object.keys(this.shapes)[0]];
+        /**
+         * The current shape.
+         * @type {ControlPanelEntry}
+         */
+        this.currentShape = this.entries[Object.keys(this.entries)[0]];
 
         this.initDOM(title, parent);
 
@@ -27,9 +60,23 @@ class ControlPanel extends EventTarget {
 
     }
 
+    /**
+     * The title of this control panel.
+     * @returns {string}
+     */
     get title() { return this.titleHeader.innerText; }
+
+    /**
+     * Sets the title of this control panel.
+     * @param {string} title - The new title.
+     */
     set title(title) { this.titleHeader.innerText = title; }
 
+    /**
+     * Initializes the control panel DOM.
+     * @param {string} title - The title of the control panel.
+     * @param {HTMLElement} parent - The parent element that this panel should root to.
+     */
     initDOM(title, parent) {
 
         const root = document.createElement('div');
@@ -45,11 +92,11 @@ class ControlPanel extends EventTarget {
         root.appendChild(this.divider());
 
         this.shapeSelector = document.createElement('select');
-        for (let key of Object.keys(this.shapes)) {
+        for (let key of Object.keys(this.entries)) {
             const option = document.createElement('option');
             option.value = key;
             option.innerText = key;
-            if (this.shapes[key] == this.currentShape) option.selected = true;
+            if (this.entries[key] == this.currentShape) option.selected = true;
             this.shapeSelector.appendChild(option);
         }
         this.shapeSelector.addEventListener('change', this.changeShape.bind(this));
@@ -63,14 +110,23 @@ class ControlPanel extends EventTarget {
 
     }
 
+    /**
+     * Changes the current shape of the control panel.
+     */
     changeShape() {
 
-        this.currentShape = this.shapes[this.shapeSelector.options[this.shapeSelector.selectedIndex].value];
+        this.currentShape = this.entries[this.shapeSelector.options[this.shapeSelector.selectedIndex].value];
         this.generate();
         this.dispatchEvent(new Event('change'));
 
     }
 
+    /**
+     * Creates a new section for the control panel.
+     * @param {string} name - The name of the section.
+     * @param  {...HTMLElement} children - The children to append to this section.
+     * @returns {HTMLDivElement} The new section.
+     */
     section(name, ...children) {
 
         const section = document.createElement('div');
@@ -90,6 +146,10 @@ class ControlPanel extends EventTarget {
 
     }
 
+    /**
+     * Creates a new divider for the control panel.
+     * @returns {HTMLDivElement} The new divider.
+     */
     divider() {
 
         const divider = document.createElement('div');
@@ -98,6 +158,9 @@ class ControlPanel extends EventTarget {
 
     }
 
+    /**
+     * Generates required parameter input elements for the current shape.
+     */
     generate() {
         
         this.dynamic.innerHTML = '';
