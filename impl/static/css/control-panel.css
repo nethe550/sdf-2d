@@ -1,0 +1,128 @@
+:root {
+
+    --control-panel-font-color: rgb(255,255,255);
+    --control-panel-font-color-alt: rgb(180,180,180);
+
+    --control-panel-background-1: rgb(55,55,65);
+    --control-panel-background-2: rgb(75,75,85);
+
+}
+
+div.control-panel > div.control-panel-section > h2 {
+
+    margin: 5px;
+
+}
+
+div.control-panel select {
+
+    color: var(--control-panel-font-color);
+
+    border: 1px solid var(--control-panel-font-color-alt);
+    border-radius: 6px;
+
+    background-color: var(--control-panel-background-1);
+
+}
+
+div.control-panel input {
+
+    color: var(--control-panel-font-color-alt);
+
+    border: 1px solid var(--control-panel-font-color-alt);
+    border-radius: 6px;
+
+    background-color: var(--control-panel-background-1);
+
+    min-width: 0;
+    
+    padding: 2px 4px;
+
+}
+
+div.control-panel input[type="number"] {
+    
+    -moz-appearance: textfield;
+
+}
+
+div.control-panel input:hover, div.control-panel input:focus {
+
+    border: 1px solid var(--control-panel-font-color);
+
+}
+
+div.control-panel input:focus {
+
+    color: var(--control-panel-font-color);
+
+    background-color: var(--control-panel-background-2);
+
+}
+
+div.control-panel {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 240px;
+
+    background-color: rgba(35,35,45,0.25);
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: 1px solid var(--control-panel-font-color-alt);
+
+}
+
+div.control-panel-section {
+
+    --padding-horizontal: 5px;
+    --padding-vertical: 5px;
+
+    width: calc(100% - var(--padding-horizontal) * 2);
+
+    min-height: 48px;
+
+    display: flex;
+    flex-direction: row;
+
+    padding: var(--padding-vertical) var(--padding-horizontal);
+
+}
+
+div.control-panel-section > fieldset {
+
+    width: 100%;
+
+    border: 1px solid var(--control-panel-font-color);
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.5em;
+
+}
+
+div.control-panel-section > fieldset > *:not(legend) {
+
+    width: 100%;
+
+}
+
+div.control-panel-section > fieldset > label {
+
+    width: fit-content;
+
+}
+
+div.control-panel-divider {
+
+    border-top: 1px solid var(--control-panel-font-color-alt);
+
+    margin: 12px 0;
+
+}
